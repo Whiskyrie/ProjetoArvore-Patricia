@@ -1,10 +1,10 @@
 #ifndef STRUCT_DESCRITOR_ARVORE_H
 #define STRUCT_DESCRITOR_ARVORE_H
 
-struct dPatricia
+typedef struct dPatricia
 {
     pNohPatricia raiz;
-    int quantidadeNohs;
-};
+    int quantidadeChaves;
+} DPatricia;
 
 #endif

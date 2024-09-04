@@ -1,72 +1,80 @@
 #ifndef INCLUIR_INFO_PREFIXO_H
 #define INCLUIR_INFO_PREFIXO_H
 
-int buscarInfoPrefixo(pDPatricia, char[], int);
-
-/* --------------------------*/
-pNohPatricia incluirInfoPrefixoRecursivo(pNohPatricia raiz, char chave[], int k, int *L)
+pNohPatricia addPatriciaKeyRecursive(pNohPatricia raiz, char *chave, int nivel)
 {
-
-   pNohPatricia novo;
-
-   (*L)++;
-
-   // caso base - todos os d�gitos foram colocados na �rvore
-   if (*L == k)
+   if (raiz == NULL)
    {
-
-      novo = criarNohPrefixo(1); // cria um terminal
+      pNohPatricia novo = criarNohPatricia(1, nivel);
+      novo->chave = strdup(chave);
       return novo;
    }
 
-   if (raiz == NULL)
+   if (raiz->ehFolha)
    {
-      // cria um novo n�h interno para acomodar o pr�ximo d�gito da chave
-      novo = criarNohPrefixo(0);
-      if (chave[*L] == '0')
+      if (strcmp(raiz->chave, chave) == 0)
       {
-         // pr�ximo s�mbolo da chave, pois L come�ou com ZERO
-         novo->esquerda = incluirInfoPrefixoRecursivo(novo->esquerda, chave, k, L);
+         return raiz; // Chave já existe
+      }
+
+      pNohPatricia novoInterno = criarNohPatricia(0, nivel);
+      int bitAtual = getBit(chave, nivel);
+      int bitExistente = getBit(raiz->chave, nivel);
+
+      if (bitAtual == bitExistente)
+      {
+         if (bitAtual == 0)
+         {
+            novoInterno->esquerda = addPatriciaKeyRecursive(raiz, chave, nivel + 1);
+            novoInterno->direita = NULL;
+         }
+         else
+         {
+            novoInterno->direita = addPatriciaKeyRecursive(raiz, chave, nivel + 1);
+            novoInterno->esquerda = NULL;
+         }
       }
       else
       {
-         novo->direita = incluirInfoPrefixoRecursivo(novo->direita, chave, k, L);
-      }
+         pNohPatricia novaFolha = criarNohPatricia(1, nivel);
+         novaFolha->chave = strdup(chave);
 
-      return novo;
+         if (bitAtual == 0)
+         {
+            novoInterno->esquerda = novaFolha;
+            novoInterno->direita = raiz;
+         }
+         else
+         {
+            novoInterno->direita = novaFolha;
+            novoInterno->esquerda = raiz;
+         }
+      }
+      return novoInterno;
    }
 
-   // caso recursivo
-   if (chave[*L] == '0')
+   if (getBit(chave, nivel) == 0)
    {
-      raiz->esquerda = incluirInfoPrefixoRecursivo(raiz->esquerda, chave, k, L);
+      raiz->esquerda = addPatriciaKeyRecursive(raiz->esquerda, chave, nivel + 1);
    }
    else
    {
-      raiz->direita = incluirInfoPrefixoRecursivo(raiz->direita, chave, k, L);
+      raiz->direita = addPatriciaKeyRecursive(raiz->direita, chave, nivel + 1);
    }
 
    return raiz;
 }
 
-/* ----------------------------------------------------------*/
-int incluirInfoPrefixo(pDPatricia arvore, char chave[], int k)
+int addPatriciaKey(pDPatricia arvore, char *chave)
 {
-
-   int L = -1;
-
-   printf("\n Buscando a chave: %s", chave);
-   int r = buscarInfoPrefixo(arvore, chave, k); // verifica tamb�m se � prefixo
-
-   printf("\n Achou chave ou prefixo= %d \n", r);
-   if (r == 0)
+   if (arvore == NULL || chave == NULL)
    {
-      // a raiz da �rvore n�o deve ser alterada devido a uma inclus�o
-      incluirInfoPrefixoRecursivo(arvore->raiz, chave, k, &L);
-      return 1;
+      return 0;
    }
 
-   return 0;
+   arvore->raiz = addPatriciaKeyRecursive(arvore->raiz, chave, 0);
+   arvore->quantidadeChaves++;
+   return 1;
 }
 
 #endif

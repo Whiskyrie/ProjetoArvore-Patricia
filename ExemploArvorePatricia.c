@@ -1,32 +1,40 @@
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include "Utils.h"
 #include "ArvorePatricia.h"
 
-pDPatricia constroiArvorePrefixo(char *chaves[], int tam)
-{
-
-    pDPatricia arvore = criarArvorePrefixo();
-    int i, r;
-    for (i = 0; i < tam; i++)
-    {
-        r = incluirInfoPrefixo(arvore, chaves[i], strlen(chaves[i]));
-        desenhaArvorePrefixo(arvore);
-        if (r == 0)
-            printf("\n Erro na inclus�o da chave [%s] - j� existe ou � prefixo de outra chave!", chaves[i]);
-    }
-
-    // desenhaArvorePrefixo(arvore);
-    return arvore;
-}
-
-//-------------------------------------------------------
 int main()
 {
+    pDPatricia arvore = createPatriciaTree();
 
-    char *ex1[] = {"001100", "01", "001101", "1010", "11"};
-    char *ex2[] = {"100101", "101", "001101", "101011", "11"};
+    printf("Inserindo chaves na arvore Patricia:\n");
+    addPatriciaKey(arvore, "1010");
+    addPatriciaKey(arvore, "1011");
+    addPatriciaKey(arvore, "0010");
+    addPatriciaKey(arvore, "1100");
+    addPatriciaKey(arvore, "1111");
 
-    constroiArvorePrefixo(ex1, 5);
-    // constroiArvorePrefixo(ex2, 5);
+    // printf("\nImprimindo a arvore:\n");
+    // printPatriciaTree(arvore, printChar);
+
+    printf("\nBuscando chaves:\n");
+    printf("Busca '1010': %d\n", searchPatriciaKey(arvore, "1010"));
+    printf("Busca '1100': %d\n", searchPatriciaKey(arvore, "1100"));
+
+    printPatriciaTree(arvore, printChar);
+
+    printf("\nRemovendo a chave '1011':\n");
+    removePatriciaKey(arvore, "1011");
+    printPatriciaTree(arvore, printChar);
+
+    printf("\nRemovendo a chave '0010':\n");
+    removePatriciaKey(arvore, "0010");
+    printPatriciaTree(arvore, printChar);
+
+    printf("\nTentando remover uma chave inexistente '0000':\n");
+    int resultado = removePatriciaKey(arvore, "0000");
+    printf("Resultado da remocao: %d\n", resultado);
+    printPatriciaTree(arvore, printChar);
+
+    return 0;
 }

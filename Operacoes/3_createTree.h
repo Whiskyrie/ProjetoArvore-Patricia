@@ -1,28 +1,35 @@
-#ifndef CRIAR_ARVORE_PREFIXO_H
-#define CRIAR_ARVORE_PREFIXO_H
+#ifndef CRIAR_ARVORE_PATRICIA_H
+#define CRIAR_ARVORE_PATRICIA_H
 
-#include <stdlib.h>
-
-//---------------------------------
-pNohPatricia criarNohPrefixo(int terminal)
+pNohPatricia criarNohPatricia(int ehFolha, int indice)
 {
+    pNohPatricia pNovo = (pNohPatricia)malloc(sizeof(NohPatricia));
+    if (pNovo == NULL)
+    {
+        return NULL;
+    }
 
-    pNohPatricia pNovo = malloc(sizeof(NohPatricia));
-    pNovo->terminal = terminal;
+    pNovo->ehFolha = ehFolha;
+    pNovo->indice = indice;
     pNovo->esquerda = NULL;
     pNovo->direita = NULL;
+    pNovo->chave = NULL;
+
     return pNovo;
 }
 
-/* --------------------------*/
-pDPatricia criarArvorePrefixo()
+pDPatricia createPatriciaTree()
 {
+    pDPatricia dPat = (pDPatricia)malloc(sizeof(DPatricia));
+    if (dPat == NULL)
+    {
+        return NULL;
+    }
 
-    pDPatricia dPref = malloc(sizeof(DPatricia));
-    dPref->raiz = criarNohPrefixo(0); // a raiz n�o armazena chave
-    dPref->quantidadeNohs = 1;
+    dPat->raiz = NULL;
+    dPat->quantidadeChaves = 0;
 
-    return dPref;
-};
+    return dPat;
+}
 
 #endif

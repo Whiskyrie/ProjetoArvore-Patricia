@@ -1,11 +1,13 @@
 #ifndef STRUCT_ARVORE_H
 #define STRUCT_ARVORE_H
 
-struct nohPatricia
+typedef struct nohPatricia
 {
-   int terminal;
+   int ehFolha;
+   int indice;
    struct nohPatricia *esquerda;
    struct nohPatricia *direita;
-};
+   char *chave;
+} NohPatricia;
 
 #endif

@@ -93,7 +93,15 @@ void *sliceString(void *info, int pos)
 void printChar(void *info)
 {
    char *pc = (char *)info;
-   printf("%c - ", *pc);
+   printf("%s", pc); // Print the entire string, not just the first character
+}
+
+// Função auxiliar para obter o bit na posição i da chave
+int getBit(char *chave, int i)
+{
+   int byteIndex = i / 8;
+   int bitIndex = 7 - (i % 8);
+   return (chave[byteIndex] & (1 << bitIndex)) != 0;
 }
 
 #endif /* UTILS_H */

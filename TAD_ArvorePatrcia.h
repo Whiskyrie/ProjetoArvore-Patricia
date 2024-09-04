@@ -5,21 +5,23 @@
 /*------------------------------------------*/
 /* estrutura do noh da arvore */
 typedef struct nohPatricia NohPatricia;
+
 typedef NohPatricia *pNohPatricia;
 
-/* descritor da arvore */
 typedef struct dPatricia DPatricia;
+
 typedef DPatricia *pDPatricia;
 
-/*------------------------------------------*/
-/* operacoes                                */
-/*------------------------------------------*/
-pDPatricia criarArvorePrefixo();
+typedef void (*FuncaoImpressao)(void *);
 
-int incluirInfoPrefixo(pDPatricia, char[], int);
-int excluirInfoPrefixo(pDPatricia, char[], int);
-int buscarInfoPrefixo(pDPatricia, char[], int);
+pDPatricia createPatriciaTree();
 
-void desenhaArvorePrefixo(pDPatricia);
+int addPatriciaKey(pDPatricia arvore, char *chave);
+
+int removePatriciaKey(pDPatricia arvore, char *chave);
+
+int searchPatriciaKey(pDPatricia arvore, char *chave);
+
+void printPatrciaTree(pDPatricia arvore);
 
 #endif
